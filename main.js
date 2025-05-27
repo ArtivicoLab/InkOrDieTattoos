@@ -1028,42 +1028,66 @@ function showWebsiteShareModal(url, text) {
     const modal = document.createElement('div');
     modal.className = 'website-share-modal';
     modal.innerHTML = `
+        <div class="modal-overlay" onclick="closeWebsiteShareModal()"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <i class="fas fa-share-alt"></i>
-                <h3>Share Website</h3>
+                <div class="header-content">
+                    <div class="share-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </div>
+                    <div class="header-text">
+                        <h3>Share Ink Or Die</h3>
+                        <p>Spread the word about our amazing work</p>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeWebsiteShareModal()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
+            
             <div class="modal-body">
-                <p>✅ Website link copied to clipboard!</p>
-                <div class="share-url-display">
-                    <input type="text" value="${url}" readonly onclick="this.select()">
-                    <button class="copy-btn" onclick="copyWebsiteUrl('${url}')">
-                        <i class="fas fa-copy"></i>
-                    </button>
+                <div class="share-url-section">
+                    <label>Website Link</label>
+                    <div class="url-container">
+                        <input type="text" value="${url}" readonly onclick="this.select()" class="url-input">
+                        <button class="copy-url-btn" onclick="copyWebsiteUrl('${url}')">
+                            <i class="fas fa-copy"></i>
+                            <span>Copy</span>
+                        </button>
+                    </div>
                 </div>
-                <p>Share on your favorite platform:</p>
-                <div class="share-platforms">
-                    <button class="platform-btn facebook" onclick="shareOnFacebook('${url}', '${encodeURIComponent(text)}')">
-                        <i class="fab fa-facebook-f"></i>
-                        Facebook
-                    </button>
-                    <button class="platform-btn twitter" onclick="shareOnTwitter('${url}', '${encodeURIComponent(text)}')">
-                        <i class="fab fa-twitter"></i>
-                        Twitter
-                    </button>
-                    <button class="platform-btn whatsapp" onclick="shareOnWhatsApp('${url}', '${encodeURIComponent(text)}')">
-                        <i class="fab fa-whatsapp"></i>
-                        WhatsApp
-                    </button>
-                    <button class="platform-btn email" onclick="shareViaEmail('${url}', '${encodeURIComponent(text)}')">
-                        <i class="fas fa-envelope"></i>
-                        Email
-                    </button>
-                </div>
-                <div class="modal-actions">
-                    <button class="close-modal-btn" onclick="closeWebsiteShareModal()">
-                        Close
-                    </button>
+                
+                <div class="platforms-section">
+                    <label>Share On</label>
+                    <div class="platforms-grid">
+                        <button class="platform-card facebook" onclick="shareOnFacebook('${url}', '${encodeURIComponent(text)}')">
+                            <div class="platform-icon">
+                                <i class="fab fa-facebook-f"></i>
+                            </div>
+                            <span>Facebook</span>
+                        </button>
+                        
+                        <button class="platform-card twitter" onclick="shareOnTwitter('${url}', '${encodeURIComponent(text)}')">
+                            <div class="platform-icon">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                            <span>Twitter</span>
+                        </button>
+                        
+                        <button class="platform-card whatsapp" onclick="shareOnWhatsApp('${url}', '${encodeURIComponent(text)}')">
+                            <div class="platform-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <span>WhatsApp</span>
+                        </button>
+                        
+                        <button class="platform-card email" onclick="shareViaEmail('${url}', '${encodeURIComponent(text)}')">
+                            <div class="platform-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <span>Email</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1139,7 +1163,6 @@ function addWebsiteShareModalStyles() {
         .website-share-modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.8);
             z-index: 3000;
             display: flex;
             align-items: center;
@@ -1152,114 +1175,263 @@ function addWebsiteShareModalStyles() {
             opacity: 1;
         }
         
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        
         .website-share-modal .modal-content {
             background: white;
-            border-radius: 20px;
-            max-width: 500px;
+            border-radius: 24px;
+            max-width: 480px;
             width: 90%;
-            max-height: 90vh;
-            overflow: auto;
-            transform: scale(0.8);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 85vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
         }
         
         .website-share-modal.show .modal-content {
             transform: scale(1);
         }
         
-        .website-share-modal .modal-header {
-            background: var(--gradient-primary);
+        .modal-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
             color: white;
             padding: 2rem;
-            text-align: center;
-            border-radius: 20px 20px 0 0;
+            position: relative;
+            overflow: hidden;
         }
         
-        .website-share-modal .modal-header i {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--accent-gold) 0%, var(--primary-red) 100%);
+            opacity: 0.1;
         }
         
-        .website-share-modal .modal-header h3 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-        
-        .share-url-display {
+        .header-content {
             display: flex;
-            gap: 0.5rem;
-            margin: 1rem 0;
-            padding: 0.8rem;
-            background: #f8f9fa;
-            border-radius: 10px;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
         }
         
-        .share-url-display input {
+        .share-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 20px rgba(213, 0, 50, 0.4);
+        }
+        
+        .header-text h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .header-text p {
+            margin: 0.2rem 0 0 0;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .share-url-section {
+            margin-bottom: 2rem;
+        }
+        
+        .share-url-section label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .url-container {
+            display: flex;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        
+        .url-container:focus-within {
+            border-color: var(--accent-gold);
+        }
+        
+        .url-input {
             flex: 1;
+            padding: 1rem;
             border: none;
             background: transparent;
             font-size: 0.9rem;
-            color: #333;
+            color: #1f2937;
+            outline: none;
         }
         
-        .copy-btn {
-            padding: 0.5rem;
-            background: var(--accent-gold);
+        .copy-url-btn {
+            padding: 0.8rem 1.2rem;
+            background: var(--gradient-primary);
             border: none;
-            border-radius: 5px;
             color: white;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-        
-        .copy-btn:hover {
-            background: #b8860b;
-        }
-        
-        .share-platforms {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        
-        .platform-btn {
             display: flex;
-            flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            padding: 1rem;
-            border: none;
-            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .copy-url-btn:hover {
+            transform: translateX(-2px);
+            box-shadow: 0 4px 12px rgba(213, 0, 50, 0.3);
+        }
+        
+        .platforms-section label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .platform-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            background: white;
             cursor: pointer;
-            transition: transform 0.2s;
-            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #374151;
             font-weight: 600;
         }
         
-        .platform-btn:hover {
-            transform: translateY(-2px);
+        .platform-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .platform-btn.facebook {
+        .platform-card.facebook:hover {
+            border-color: #1877f2;
+            background: #f0f7ff;
+        }
+        
+        .platform-card.twitter:hover {
+            border-color: #1da1f2;
+            background: #f0f9ff;
+        }
+        
+        .platform-card.whatsapp:hover {
+            border-color: #25d366;
+            background: #f0fdf4;
+        }
+        
+        .platform-card.email:hover {
+            border-color: #6b7280;
+            background: #f9fafb;
+        }
+        
+        .platform-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .facebook .platform-icon {
             background: #1877f2;
+            color: white;
         }
         
-        .platform-btn.twitter {
+        .twitter .platform-icon {
             background: #1da1f2;
+            color: white;
         }
         
-        .platform-btn.whatsapp {
+        .whatsapp .platform-icon {
             background: #25d366;
+            color: white;
         }
         
-        .platform-btn.email {
+        .email .platform-icon {
             background: #6b7280;
+            color: white;
         }
         
-        .platform-btn i {
-            font-size: 1.5rem;
+        @media (max-width: 640px) {
+            .platforms-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .modal-header {
+                padding: 1.5rem;
+            }
         }
     `;
     

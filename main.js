@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeScrollEffects();
     initializeAnimations();
     initializeLightbox();
+    initializeBusinessHours();
     
     console.log('🎨 Ink Or Die Tattoos website initialized successfully!');
 });
@@ -609,6 +610,170 @@ window.scrollToSection = scrollToSection;
 window.scrollToTop = scrollToTop;
 window.openLightbox = openLightbox;
 window.closeLightbox = closeLightbox;
+
+// ===== BUSINESS HOURS FUNCTIONALITY =====
+function initializeBusinessHours() {
+    // Business hours configuration based on screenshot
+    const businessHours = {
+        1: { open: 11, close: 20 }, // Monday: 11AM-8PM
+        2: { open: 11, close: 20 }, // Tuesday: 11AM-8PM
+        3: { open: 11, close: 20 }, // Wednesday: 11AM-8PM
+        4: { open: 11, close: 20 }, // Thursday: 11AM-8PM
+        5: { open: 11, close: 20 }, // Friday: 11AM-8PM
+        6: { open: 11, close: 20 }, // Saturday: 11AM-8PM
+        0: { open: 13, close: 18 }  // Sunday: 1PM-6PM
+    };
+    
+    updateBusinessStatus();
+    
+    // Update every minute
+    setInterval(updateBusinessStatus, 60000);
+    
+    function updateBusinessStatus() {
+        const now = new Date();
+        const currentDay = now.getDay();
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+        const currentTime = currentHour + (currentMinute / 60);
+        
+        const todayHours = businessHours[currentDay];
+        const status = getBusinessStatus(currentTime, todayHours, now);
+        
+        updateBannerDisplay(status, now);
+        updateBackToTopStatus(status);
+    }
+    
+    function getBusinessStatus(currentTime, todayHours, now) {
+        if (!todayHours) {
+            return { type: 'closed', message: 'Closed Today' };
+        }
+        
+        const { open, close } = todayHours;
+        const closingSoonThreshold = close - 1; // 1 hour before closing
+        const openingSoonThreshold = open - 1; // 1 hour before opening
+        
+        if (currentTime >= open && currentTime < close) {
+            if (currentTime >= closingSoonThreshold) {
+                const minutesUntilClose = Math.round((close - currentTime) * 60);
+                return { 
+                    type: 'closing-soon', 
+                    message: `Closing in ${minutesUntilClose} minutes`,
+                    nextChange: `Closes at ${formatTime(close)}`
+                };
+            }
+            return { 
+                type: 'open', 
+                message: 'We\'re Open!',
+                nextChange: `Closes at ${formatTime(close)}`
+            };
+        } else if (currentTime >= openingSoonThreshold && currentTime < open) {
+            const minutesUntilOpen = Math.round((open - currentTime) * 60);
+            return { 
+                type: 'opening-soon', 
+                message: `Opening in ${minutesUntilOpen} minutes`,
+                nextChange: `Opens at ${formatTime(open)}`
+            };
+        } else {
+            const nextOpenTime = getNextOpenTime(now, businessHours);
+            return { 
+                type: 'closed', 
+                message: 'Currently Closed',
+                nextChange: nextOpenTime
+            };
+        }
+    }
+    
+    function getNextOpenTime(now, businessHours) {
+        const currentDay = now.getDay();
+        const currentTime = now.getHours() + (now.getMinutes() / 60);
+        
+        // Check if we can open today
+        const todayHours = businessHours[currentDay];
+        if (todayHours && currentTime < todayHours.open) {
+            return `Opens today at ${formatTime(todayHours.open)}`;
+        }
+        
+        // Find next opening day
+        for (let i = 1; i <= 7; i++) {
+            const nextDay = (currentDay + i) % 7;
+            const nextDayHours = businessHours[nextDay];
+            if (nextDayHours) {
+                const dayName = getDayName(nextDay);
+                return `Next open: ${dayName} at ${formatTime(nextDayHours.open)}`;
+            }
+        }
+        
+        return 'Check back soon';
+    }
+    
+    function updateBannerDisplay(status, now) {
+        const banner = document.getElementById('statusBanner');
+        const nav = document.getElementById('nav');
+        const hero = document.querySelector('.hero');
+        const statusText = banner.querySelector('.status-text');
+        const currentTimeEl = banner.querySelector('.current-time');
+        const nextChangeEl = banner.querySelector('.next-change');
+        
+        if (banner && nav && hero) {
+            // Update banner classes
+            banner.className = `status-banner visible ${status.type}`;
+            nav.classList.add('with-banner');
+            hero.classList.add('with-banner');
+            
+            // Update content
+            statusText.textContent = status.message;
+            currentTimeEl.textContent = formatCurrentTime(now);
+            nextChangeEl.textContent = status.nextChange || '';
+        }
+    }
+    
+    function updateBackToTopStatus(status) {
+        const backToTop = document.getElementById('backToTop');
+        const tooltip = document.getElementById('statusTooltip');
+        
+        if (backToTop && tooltip) {
+            backToTop.className = `back-to-top ${status.type}`;
+            
+            let tooltipText = '';
+            switch (status.type) {
+                case 'open':
+                    tooltipText = '🟢 We\'re Open!';
+                    break;
+                case 'closing-soon':
+                    tooltipText = '🟡 Closing Soon';
+                    break;
+                case 'closed':
+                    tooltipText = '🔴 Currently Closed';
+                    break;
+                case 'opening-soon':
+                    tooltipText = '🔵 Opening Soon';
+                    break;
+            }
+            
+            tooltip.textContent = tooltipText;
+        }
+    }
+    
+    function formatTime(hour) {
+        if (hour === 12) return '12PM';
+        if (hour === 0) return '12AM';
+        if (hour > 12) return `${hour - 12}PM`;
+        return `${hour}AM`;
+    }
+    
+    function formatCurrentTime(now) {
+        return now.toLocaleTimeString('en-US', { 
+            hour: 'numeric', 
+            minute: '2-digit',
+            hour12: true 
+        });
+    }
+    
+    function getDayName(dayIndex) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[dayIndex];
+    }
+}
 
 // ===== LOADING COMPLETE =====
 window.addEventListener('load', () => {

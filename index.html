@@ -20,6 +20,16 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Business Hours Status Banner -->
+    <div class="status-banner" id="statusBanner">
+        <div class="status-content">
+            <span class="status-indicator"></span>
+            <span class="status-text">Loading store hours...</span>
+            <span class="current-time"></span>
+            <span class="next-change"></span>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav-container">
@@ -413,7 +423,7 @@
                             <i class="fas fa-clock"></i>
                         </div>
                         <h3>Studio Hours</h3>
-                        <p>Tuesday - Saturday<br>12:00 PM - 9:00 PM</p>
+                        <p>Tue-Fri: 11AM-8PM<br>Sat: 11AM-8PM<br>Sun: 1-6PM<br>Mon: 11AM-8PM</p>
                     </div>
                 </div>
                 
@@ -546,6 +556,7 @@
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
         <i class="fas fa-arrow-up"></i>
+        <div class="status-tooltip" id="statusTooltip">Store Status</div>
     </button>
 
     <!-- Scripts -->

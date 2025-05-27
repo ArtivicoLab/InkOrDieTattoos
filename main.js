@@ -974,6 +974,298 @@ function showShareSuccess(message) {
     }, 3000);
 }
 
+// ===== WEBSITE SHARE FUNCTIONALITY =====
+function shareWebsite() {
+    const websiteUrl = window.location.href;
+    const shareTitle = "Ink Or Die Tattoos - Amazing Tattoo Studio in Decatur, GA";
+    const shareText = `🎨 Check out Ink Or Die Tattoos! 
+
+✨ Female-owned tattoo studio in Decatur, GA
+🌟 Custom designs, portraits & cover-ups
+💎 Professional artists & clean environment
+📍 3407 Covington Dr, Decatur, GA 30032
+
+Book your consultation today!
+📞 (404) 555-1234
+
+#InkOrDieTattoos #DecaturTattoos #FemaleOwned #CustomTattoos`;
+
+    // Try native sharing first
+    if (navigator.share) {
+        navigator.share({
+            title: shareTitle,
+            text: shareText,
+            url: websiteUrl
+        }).then(() => {
+            showShareSuccess('Website shared successfully!');
+        }).catch((error) => {
+            // Fallback to copy link
+            fallbackWebsiteShare(websiteUrl, shareText);
+        });
+    } else {
+        // Fallback for browsers without Web Share API
+        fallbackWebsiteShare(websiteUrl, shareText);
+    }
+}
+
+function fallbackWebsiteShare(url, text) {
+    // Copy URL to clipboard
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+            showWebsiteShareModal(url, text);
+        }).catch(() => {
+            // Manual copy fallback
+            copyToClipboardFallback(url);
+            showWebsiteShareModal(url, text);
+        });
+    } else {
+        copyToClipboardFallback(url);
+        showWebsiteShareModal(url, text);
+    }
+}
+
+function showWebsiteShareModal(url, text) {
+    const modal = document.createElement('div');
+    modal.className = 'website-share-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-share-alt"></i>
+                <h3>Share Website</h3>
+            </div>
+            <div class="modal-body">
+                <p>✅ Website link copied to clipboard!</p>
+                <div class="share-url-display">
+                    <input type="text" value="${url}" readonly onclick="this.select()">
+                    <button class="copy-btn" onclick="copyWebsiteUrl('${url}')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <p>Share on your favorite platform:</p>
+                <div class="share-platforms">
+                    <button class="platform-btn facebook" onclick="shareOnFacebook('${url}', '${encodeURIComponent(text)}')">
+                        <i class="fab fa-facebook-f"></i>
+                        Facebook
+                    </button>
+                    <button class="platform-btn twitter" onclick="shareOnTwitter('${url}', '${encodeURIComponent(text)}')">
+                        <i class="fab fa-twitter"></i>
+                        Twitter
+                    </button>
+                    <button class="platform-btn whatsapp" onclick="shareOnWhatsApp('${url}', '${encodeURIComponent(text)}')">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp
+                    </button>
+                    <button class="platform-btn email" onclick="shareViaEmail('${url}', '${encodeURIComponent(text)}')">
+                        <i class="fas fa-envelope"></i>
+                        Email
+                    </button>
+                </div>
+                <div class="modal-actions">
+                    <button class="close-modal-btn" onclick="closeWebsiteShareModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Add styles
+    addWebsiteShareModalStyles();
+    
+    // Show modal
+    setTimeout(() => modal.classList.add('show'), 100);
+    
+    // Auto close after 15 seconds
+    setTimeout(() => {
+        if (document.body.contains(modal)) {
+            closeWebsiteShareModal();
+        }
+    }, 15000);
+}
+
+function shareOnFacebook(url, text) {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+    closeWebsiteShareModal();
+}
+
+function shareOnTwitter(url, text) {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${text}`, '_blank', 'width=600,height=400');
+    closeWebsiteShareModal();
+}
+
+function shareOnWhatsApp(url, text) {
+    window.open(`https://wa.me/?text=${text}%20${encodeURIComponent(url)}`, '_blank');
+    closeWebsiteShareModal();
+}
+
+function shareViaEmail(url, text) {
+    const subject = encodeURIComponent('Check out Ink Or Die Tattoos!');
+    const body = encodeURIComponent(`${decodeURIComponent(text)}\n\nVisit: ${url}`);
+    window.open(`mailto:?subject=${subject}&body=${body}`, '_self');
+    closeWebsiteShareModal();
+}
+
+function copyWebsiteUrl(url) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+            showShareSuccess('URL copied to clipboard!');
+        });
+    } else {
+        copyToClipboardFallback(url);
+        showShareSuccess('URL copied to clipboard!');
+    }
+}
+
+function closeWebsiteShareModal() {
+    const modal = document.querySelector('.website-share-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+            const style = document.querySelector('#website-share-modal-styles');
+            if (style) style.remove();
+        }, 300);
+    }
+}
+
+function addWebsiteShareModalStyles() {
+    if (document.querySelector('#website-share-modal-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'website-share-modal-styles';
+    style.textContent = `
+        .website-share-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .website-share-modal.show {
+            opacity: 1;
+        }
+        
+        .website-share-modal .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: auto;
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .website-share-modal.show .modal-content {
+            transform: scale(1);
+        }
+        
+        .website-share-modal .modal-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .website-share-modal .modal-header i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .website-share-modal .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .share-url-display {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .share-url-display input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        
+        .copy-btn {
+            padding: 0.5rem;
+            background: var(--accent-gold);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #b8860b;
+        }
+        
+        .share-platforms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .platform-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .platform-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .platform-btn.facebook {
+            background: #1877f2;
+        }
+        
+        .platform-btn.twitter {
+            background: #1da1f2;
+        }
+        
+        .platform-btn.whatsapp {
+            background: #25d366;
+        }
+        
+        .platform-btn.email {
+            background: #6b7280;
+        }
+        
+        .platform-btn i {
+            font-size: 1.5rem;
+        }
+    `;
+    
+    document.head.appendChild(style);
+}
+
 // ===== EXPORT FUNCTIONS FOR INLINE USAGE =====
 window.scrollToSection = scrollToSection;
 window.scrollToTop = scrollToTop;
@@ -982,6 +1274,13 @@ window.closeLightbox = closeLightbox;
 window.shareToInstagram = shareToInstagram;
 window.openInstagram = openInstagram;
 window.closeInstagramModal = closeInstagramModal;
+window.shareWebsite = shareWebsite;
+window.shareOnFacebook = shareOnFacebook;
+window.shareOnTwitter = shareOnTwitter;
+window.shareOnWhatsApp = shareOnWhatsApp;
+window.shareViaEmail = shareViaEmail;
+window.copyWebsiteUrl = copyWebsiteUrl;
+window.closeWebsiteShareModal = closeWebsiteShareModal;
 
 // ===== BUSINESS HOURS FUNCTIONALITY =====
 function initializeBusinessHours() {

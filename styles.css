@@ -779,6 +779,52 @@ body {
     visibility: visible;
 }
 
+.website-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(213, 0, 50, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.website-share-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.website-share-btn:hover::before {
+    left: 100%;
+}
+
+.website-share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(213, 0, 50, 0.6);
+}
+
+.website-share-btn i {
+    font-size: 1.2rem;
+}
+
+.website-share-btn:hover .share-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
 .filter-btn {
     padding: 0.8rem 1.5rem;
     background: white;
@@ -1773,6 +1819,11 @@ body {
     
     .portfolio-filter {
         justify-content: center;
+    }
+    
+    .social-share-section {
+        flex-direction: column;
+        gap: 1rem;
     }
     
     .services-grid {

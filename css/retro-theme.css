@@ -4,27 +4,33 @@
  * Female-owned business with bold pink gradients and classic styling
  */
 
-/* Root Variables - Balanced Retro Palette */
+/* Root Variables - Bold Modern Palette */
 :root {
-  /* Primary Accent Colors */
-  --retro-pink-primary: #d4827e;
-  --retro-pink-secondary: #e4a49a;
-  --retro-pink-light: #f4e4e2;
-  --retro-pink-accent: #c67065;
+  /* Primary Colors */
+  --crimson-red: #dc143c;
+  --deep-purple: #6a0d83;
+  --emerald-green: #228b22;
+  --coal-black: #1a1a1a;
+  --pure-white: #ffffff;
   
-  /* Neutral Colors */
-  --retro-cream: #f5f5dc;
-  --retro-beige: #e8d5b7;
-  --retro-brown: #8b4513;
-  --retro-black: #2c1810;
-  --retro-white: #fefefe;
-  --retro-sage: #9caf88;
-  --retro-gold: #d4af37;
+  /* Secondary Colors */
+  --burgundy: #800020;
+  --royal-purple: #7851a9;
+  --forest-green: #355e3b;
+  --charcoal: #36454f;
+  --silver: #c0c0c0;
+  
+  /* Accent Colors */
+  --electric-red: #ff073a;
+  --violet: #8b00ff;
+  --lime-green: #32cd32;
+  --midnight: #2c2c2c;
+  --pearl: #f8f8ff;
   
   /* Gradients */
-  --retro-main-gradient: linear-gradient(135deg, #d4827e 0%, #e4a49a 50%, #f4e4e2 100%);
-  --retro-subtle-gradient: linear-gradient(135deg, #f4e4e2 0%, #e8d5b7 50%, #d4af37 100%);
-  --retro-dark-gradient: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #d4827e 100%);
+  --main-gradient: linear-gradient(135deg, #dc143c 0%, #6a0d83 50%, #228b22 100%);
+  --dark-gradient: linear-gradient(135deg, #1a1a1a 0%, #36454f 50%, #2c2c2c 100%);
+  --accent-gradient: linear-gradient(135deg, #ff073a 0%, #8b00ff 50%, #32cd32 100%);
   
   /* Typography */
   --retro-font-display: 'Playfair Display', serif;

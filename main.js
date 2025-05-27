@@ -652,11 +652,336 @@ window.addEventListener('unhandledrejection', (e) => {
     // Handle promise rejections
 });
 
+// ===== INSTAGRAM SHARE FUNCTIONALITY =====
+function shareToInstagram() {
+    // Create a beautiful portfolio compilation message
+    const portfolioText = `🎨 Check out the incredible work at Ink Or Die Tattoos! 
+    
+✨ Female-owned tattoo studio in Decatur, GA
+🌟 Custom designs & portrait work
+💎 Professional artists & clean environment
+📍 3407 Covington Dr, Decatur, GA 30032
+
+Book your consultation today! 
+📞 (404) 555-1234
+
+#InkOrDieTattoos #DecaturTattoos #FemaleOwned #CustomTattoos #PortraitTattoos #TattooArt #GeorgiaInk #TattooStudio #InkMaster #TattooLife`;
+
+    // Try to use Instagram's direct sharing if possible
+    if (navigator.share) {
+        navigator.share({
+            title: 'Ink Or Die Tattoos - Amazing Portfolio!',
+            text: portfolioText,
+            url: window.location.href
+        }).then(() => {
+            showShareSuccess('Portfolio shared successfully!');
+        }).catch((error) => {
+            // Fallback to copy text
+            fallbackInstagramShare(portfolioText);
+        });
+    } else {
+        // Fallback for browsers without Web Share API
+        fallbackInstagramShare(portfolioText);
+    }
+}
+
+function fallbackInstagramShare(text) {
+    // Copy text to clipboard
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showInstagramShareModal();
+        }).catch(() => {
+            // Manual copy fallback
+            copyToClipboardFallback(text);
+            showInstagramShareModal();
+        });
+    } else {
+        copyToClipboardFallback(text);
+        showInstagramShareModal();
+    }
+}
+
+function copyToClipboardFallback(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+    } catch (err) {
+        console.error('Unable to copy text');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function showInstagramShareModal() {
+    const modal = document.createElement('div');
+    modal.className = 'instagram-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fab fa-instagram"></i>
+                <h3>Share on Instagram</h3>
+            </div>
+            <div class="modal-body">
+                <p>✅ Portfolio text copied to clipboard!</p>
+                <p>Now you can:</p>
+                <div class="share-steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <span>Open Instagram app</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span>Create a new post or story</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span>Paste the copied text</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="open-instagram-btn" onclick="openInstagram()">
+                        <i class="fab fa-instagram"></i>
+                        Open Instagram
+                    </button>
+                    <button class="close-modal-btn" onclick="closeInstagramModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Add styles
+    addInstagramModalStyles();
+    
+    // Show modal
+    setTimeout(() => modal.classList.add('show'), 100);
+    
+    // Auto close after 10 seconds
+    setTimeout(() => {
+        if (document.body.contains(modal)) {
+            closeInstagramModal();
+        }
+    }, 10000);
+}
+
+function openInstagram() {
+    // Try to open Instagram app, fallback to web
+    const instagramAppUrl = 'instagram://';
+    const instagramWebUrl = 'https://www.instagram.com/';
+    
+    // Create hidden link to test app availability
+    const link = document.createElement('a');
+    link.href = instagramAppUrl;
+    
+    // Try app first, fallback to web
+    setTimeout(() => {
+        window.open(instagramWebUrl, '_blank');
+    }, 500);
+    
+    try {
+        window.location.href = instagramAppUrl;
+    } catch (e) {
+        window.open(instagramWebUrl, '_blank');
+    }
+    
+    closeInstagramModal();
+}
+
+function closeInstagramModal() {
+    const modal = document.querySelector('.instagram-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+            // Remove styles
+            const style = document.querySelector('#instagram-modal-styles');
+            if (style) style.remove();
+        }, 300);
+    }
+}
+
+function addInstagramModalStyles() {
+    if (document.querySelector('#instagram-modal-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'instagram-modal-styles';
+    style.textContent = `
+        .instagram-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .instagram-modal.show {
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: auto;
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .instagram-modal.show .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .modal-header i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .modal-body p {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .share-steps {
+            margin: 1.5rem 0;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #f09433, #dc2743);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .open-instagram-btn {
+            flex: 1;
+            padding: 1rem;
+            background: linear-gradient(45deg, #f09433, #dc2743);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .open-instagram-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .close-modal-btn {
+            flex: 1;
+            padding: 1rem;
+            background: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .close-modal-btn:hover {
+            background: #4b5563;
+        }
+    `;
+    
+    document.head.appendChild(style);
+}
+
+function showShareSuccess(message) {
+    // Simple success notification
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        background: linear-gradient(45deg, #22c55e, #16a34a);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+        z-index: 3000;
+        font-weight: 600;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    `;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
 // ===== EXPORT FUNCTIONS FOR INLINE USAGE =====
 window.scrollToSection = scrollToSection;
 window.scrollToTop = scrollToTop;
 window.openLightbox = openLightbox;
 window.closeLightbox = closeLightbox;
+window.shareToInstagram = shareToInstagram;
+window.openInstagram = openInstagram;
+window.closeInstagramModal = closeInstagramModal;
 
 // ===== BUSINESS HOURS FUNCTIONALITY =====
 function initializeBusinessHours() {

@@ -155,12 +155,22 @@
                 </p>
             </div>
             
-            <div class="portfolio-filter">
-                <button class="filter-btn active" data-filter="all">All Work</button>
-                <button class="filter-btn" data-filter="portraits">Portraits</button>
-                <button class="filter-btn" data-filter="geometric">Geometric</button>
-                <button class="filter-btn" data-filter="color">Color Work</button>
-                <button class="filter-btn" data-filter="blackgray">Black & Gray</button>
+            <div class="portfolio-controls">
+                <div class="portfolio-filter">
+                    <button class="filter-btn active" data-filter="all">All Work</button>
+                    <button class="filter-btn" data-filter="portraits">Portraits</button>
+                    <button class="filter-btn" data-filter="geometric">Geometric</button>
+                    <button class="filter-btn" data-filter="color">Color Work</button>
+                    <button class="filter-btn" data-filter="blackgray">Black & Gray</button>
+                </div>
+                
+                <div class="social-share-section">
+                    <button class="instagram-share-btn" onclick="shareToInstagram()">
+                        <i class="fab fa-instagram"></i>
+                        <span>Share Portfolio</span>
+                        <div class="share-tooltip">Share our amazing work on Instagram!</div>
+                    </button>
+                </div>
             </div>
             
             <div class="portfolio-grid" id="portfolioGrid">

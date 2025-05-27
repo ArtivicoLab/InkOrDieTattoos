@@ -207,13 +207,15 @@ function initializeFloatingGallery() {
             focusedImage.classList.remove('focused');
         }
         
-        // Focus new image
-        focusedImage = imageElement;
-        imageElement.classList.add('focused');
-        
-        // Show overlay and close button
+        // Show overlay first for smooth transition
         galleryOverlay.classList.add('active');
         closeButton.classList.add('active');
+        
+        // Small delay for overlay to appear, then focus image
+        setTimeout(() => {
+            focusedImage = imageElement;
+            imageElement.classList.add('focused');
+        }, 50);
         
         // Prevent body scroll
         document.body.style.overflow = 'hidden';
@@ -225,11 +227,18 @@ function initializeFloatingGallery() {
     function closeGalleryFocus() {
         if (focusedImage) {
             focusedImage.classList.remove('focused');
-            focusedImage = null;
+            
+            // Wait for image animation to complete before hiding overlay
+            setTimeout(() => {
+                galleryOverlay.classList.remove('active');
+                closeButton.classList.remove('active');
+                focusedImage = null;
+            }, 200);
+        } else {
+            galleryOverlay.classList.remove('active');
+            closeButton.classList.remove('active');
         }
         
-        galleryOverlay.classList.remove('active');
-        closeButton.classList.remove('active');
         document.body.style.overflow = '';
         
         // Remove keyboard listener
@@ -282,72 +291,7 @@ function initializeFloatingGallery() {
         return descriptions[Math.abs(hash) % descriptions.length];
     }
     
-    // Global functions for buttons
-    window.refreshGallery = function() {
-        loadFloatingImages();
-        
-        // Show refresh animation
-        const container = document.getElementById('floatingContainer');
-        if (container) {
-            container.style.opacity = '0.5';
-            setTimeout(() => {
-                container.style.opacity = '1';
-            }, 300);
-        }
-    };
-    
-    window.randomizePositions = function() {
-        const images = document.querySelectorAll('.floating-image');
-        const layouts = [
-            // Grid layout
-            [
-                { top: '8%', left: '8%' },
-                { top: '8%', left: '38%' },
-                { top: '8%', left: '68%' },
-                { top: '45%', left: '8%' },
-                { top: '45%', left: '38%' },
-                { top: '45%', left: '68%' },
-                { top: '26%', left: '23%' },
-                { top: '26%', left: '53%' }
-            ],
-            // Diamond layout
-            [
-                { top: '5%', left: '40%' },
-                { top: '20%', left: '15%' },
-                { top: '20%', left: '65%' },
-                { top: '35%', left: '5%' },
-                { top: '35%', left: '75%' },
-                { top: '50%', left: '15%' },
-                { top: '50%', left: '65%' },
-                { top: '65%', left: '40%' }
-            ],
-            // Circular layout
-            [
-                { top: '5%', left: '35%' },
-                { top: '15%', left: '65%' },
-                { top: '35%', left: '75%' },
-                { top: '60%', left: '65%' },
-                { top: '70%', left: '35%' },
-                { top: '60%', left: '5%' },
-                { top: '35%', left: '5%' },
-                { top: '15%', left: '15%' }
-            ]
-        ];
-        
-        const selectedLayout = layouts[Math.floor(Math.random() * layouts.length)];
-        
-        images.forEach((image, index) => {
-            const newPos = selectedLayout[index] || selectedLayout[0];
-            image.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
-            image.style.top = newPos.top;
-            image.style.left = newPos.left;
-            
-            // Reset transition after animation
-            setTimeout(() => {
-                image.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-            }, 1200);
-        });
-    };
+
 }
 
 // ===== PORTFOLIO FUNCTIONALITY =====

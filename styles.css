@@ -583,7 +583,7 @@ body {
     border-radius: var(--border-radius);
     overflow: hidden;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: var(--shadow-md);
     border: 3px solid rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
@@ -601,13 +601,15 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.5) rotate(0deg) !important;
-    width: 400px;
-    height: 500px;
+    transform: translate(-50%, -50%) scale(1.8) rotate(0deg) !important;
+    width: 450px;
+    height: 550px;
     z-index: 2000;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
     border-color: var(--accent-gold);
+    border-width: 4px;
     animation: none !important;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
 .floating-image img {
@@ -649,32 +651,7 @@ body {
     opacity: 0.9;
 }
 
-.gallery-controls {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-}
 
-.gallery-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    background: var(--gradient-primary);
-    color: white;
-    border: none;
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    box-shadow: var(--shadow-sm);
-}
-
-.gallery-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
 
 /* Gentle Floating Animation */
 @keyframes gentleFloat {
@@ -703,12 +680,12 @@ body {
 .gallery-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     z-index: 1999;
     opacity: 0;
     visibility: hidden;
-    transition: var(--transition);
-    backdrop-filter: blur(5px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(10px);
 }
 
 .gallery-overlay.active {
@@ -756,18 +733,9 @@ body {
     }
     
     .floating-image.focused {
-        width: 300px;
-        height: 380px;
-    }
-    
-    .gallery-controls {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .gallery-btn {
-        width: 100%;
-        max-width: 250px;
+        width: 320px;
+        height: 400px;
+        transform: translate(-50%, -50%) scale(1.4) rotate(0deg) !important;
     }
 }
 

@@ -4,25 +4,27 @@
  * Female-owned business with bold pink gradients and classic styling
  */
 
-/* Root Variables - Retro Pink Palette */
+/* Root Variables - Balanced Retro Palette */
 :root {
-  /* Primary Pink Gradient Colors */
-  --retro-pink-primary: #ff1493;
-  --retro-pink-secondary: #ff69b4;
-  --retro-pink-light: #ffc0cb;
-  --retro-pink-accent: #ff6bb3;
+  /* Primary Accent Colors */
+  --retro-pink-primary: #d4827e;
+  --retro-pink-secondary: #e4a49a;
+  --retro-pink-light: #f4e4e2;
+  --retro-pink-accent: #c67065;
   
   /* Neutral Colors */
   --retro-cream: #f5f5dc;
-  --retro-beige: #d2b48c;
+  --retro-beige: #e8d5b7;
   --retro-brown: #8b4513;
   --retro-black: #2c1810;
   --retro-white: #fefefe;
+  --retro-sage: #9caf88;
+  --retro-gold: #d4af37;
   
   /* Gradients */
-  --retro-main-gradient: linear-gradient(135deg, #ff1493 0%, #ff69b4 50%, #ffc0cb 100%);
-  --retro-subtle-gradient: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
-  --retro-dark-gradient: linear-gradient(135deg, #8b008b 0%, #9932cc 50%, #ba55d3 100%);
+  --retro-main-gradient: linear-gradient(135deg, #d4827e 0%, #e4a49a 50%, #f4e4e2 100%);
+  --retro-subtle-gradient: linear-gradient(135deg, #f4e4e2 0%, #e8d5b7 50%, #d4af37 100%);
+  --retro-dark-gradient: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #d4827e 100%);
   
   /* Typography */
   --retro-font-display: 'Playfair Display', serif;
@@ -237,7 +239,7 @@ body::before {
 }
 
 .hero-title .accent {
-  background: linear-gradient(45deg, #ffd700, #ffff00, #ffd700);
+  background: linear-gradient(45deg, #d4af37, #f4d03f, #d4af37);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -324,14 +326,14 @@ body::before {
 }
 
 .btn-primary {
-  background: var(--retro-main-gradient);
+  background: var(--retro-dark-gradient);
   color: var(--retro-white);
   box-shadow: var(--retro-shadow);
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(255, 20, 147, 0.4);
+  box-shadow: 0 12px 40px rgba(139, 69, 19, 0.4);
   filter: brightness(1.1);
 }
 
@@ -379,7 +381,7 @@ body::before {
 
 /* Business Status Banner */
 .business-status-banner {
-  background: var(--retro-main-gradient);
+  background: var(--retro-dark-gradient);
   color: var(--retro-white);
   padding: 1rem 0;
   text-align: center;
@@ -430,7 +432,7 @@ section {
   font-size: 3rem;
   text-align: center;
   margin-bottom: 1rem;
-  background: var(--retro-main-gradient);
+  background: var(--retro-dark-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

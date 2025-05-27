@@ -859,10 +859,13 @@ function initializeBusinessHours() {
         0: { open: 13, close: 18 }  // Sunday: 1PM-6PM
     };
     
-    updateBusinessStatus();
-    
-    // Update every minute
-    setInterval(updateBusinessStatus, 60000);
+    // Add a small delay to ensure DOM is ready
+    setTimeout(() => {
+        updateBusinessStatus();
+        
+        // Update every minute
+        setInterval(updateBusinessStatus, 60000);
+    }, 100);
     
     function updateBusinessStatus() {
         const now = new Date();
@@ -943,18 +946,21 @@ function initializeBusinessHours() {
     
     function updateBannerDisplay(status, now) {
         const banner = document.getElementById('statusBanner');
-        const statusText = banner.querySelector('.status-text');
-        const currentTimeEl = banner.querySelector('.current-time');
-        const nextChangeEl = banner.querySelector('.next-change');
         
         if (banner) {
-            // Update banner classes
-            banner.className = `status-banner visible ${status.type}`;
+            const statusText = banner.querySelector('.status-text');
+            const currentTimeEl = banner.querySelector('.current-time');
+            const nextChangeEl = banner.querySelector('.next-change');
             
-            // Update content
-            statusText.textContent = status.message;
-            currentTimeEl.textContent = formatCurrentTime(now);
-            nextChangeEl.textContent = status.nextChange || '';
+            if (statusText && currentTimeEl && nextChangeEl) {
+                // Update banner classes
+                banner.className = `status-banner visible ${status.type}`;
+                
+                // Update content
+                statusText.textContent = status.message;
+                currentTimeEl.textContent = formatCurrentTime(now);
+                nextChangeEl.textContent = status.nextChange || '';
+            }
         }
     }
     
@@ -962,26 +968,32 @@ function initializeBusinessHours() {
         const backToTop = document.getElementById('backToTop');
         const tooltip = document.getElementById('statusTooltip');
         
-        if (backToTop && tooltip) {
-            backToTop.className = `back-to-top ${status.type}`;
+        if (backToTop) {
+            // Update back-to-top button with store status classes
+            const currentClasses = backToTop.className.split(' ').filter(cls => 
+                !['open', 'closed', 'closing-soon', 'opening-soon'].includes(cls)
+            );
+            backToTop.className = [...currentClasses, status.type].join(' ');
             
-            let tooltipText = '';
-            switch (status.type) {
-                case 'open':
-                    tooltipText = '🟢 We\'re Open!';
-                    break;
-                case 'closing-soon':
-                    tooltipText = '🟡 Closing Soon';
-                    break;
-                case 'closed':
-                    tooltipText = '🔴 Currently Closed';
-                    break;
-                case 'opening-soon':
-                    tooltipText = '🔵 Opening Soon';
-                    break;
+            if (tooltip) {
+                let tooltipText = '';
+                switch (status.type) {
+                    case 'open':
+                        tooltipText = '🟢 We\'re Open!';
+                        break;
+                    case 'closing-soon':
+                        tooltipText = '🟡 Closing Soon';
+                        break;
+                    case 'closed':
+                        tooltipText = '🔴 Currently Closed';
+                        break;
+                    case 'opening-soon':
+                        tooltipText = '🔵 Opening Soon';
+                        break;
+                }
+                
+                tooltip.textContent = tooltipText;
             }
-            
-            tooltip.textContent = tooltipText;
         }
     }
     

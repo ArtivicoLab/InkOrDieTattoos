@@ -211,11 +211,11 @@
 .card-info {
   padding: 20px;
   text-align: center;
-  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+  background: linear-gradient(145deg, #ffffff, #ffb6c1);
 }
 
 .card-info h4 {
-  color: #d4af37;
+  color: #ff1493;
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0 8px 0;
@@ -223,7 +223,7 @@
 }
 
 .card-info p {
-  color: #cccccc;
+  color: #8b4513;
   font-size: 0.9rem;
   margin: 0;
   line-height: 1.4;
@@ -251,7 +251,7 @@
 }
 
 .share-btn:focus {
-  outline: 2px solid #d4af37;
+  outline: 2px solid #ff1493;
   outline-offset: 2px;
 }
 
@@ -288,21 +288,21 @@
   text-align: center;
   margin: 32px 0;
   padding: 24px;
-  background: rgba(26, 26, 26, 0.8);
+  background: rgba(255, 192, 203, 0.2);
   border-radius: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  border: 1px solid rgba(255, 20, 147, 0.3);
   backdrop-filter: blur(10px);
 }
 
 .website-share h3 {
-  color: #d4af37;
+  color: #ff1493;
   font-size: 1.3rem;
   margin: 0 0 8px 0;
   font-weight: 600;
 }
 
 .website-share p {
-  color: #cccccc;
+  color: #8b4513;
   margin: 0 0 20px 0;
   font-size: 1rem;
 }
@@ -329,13 +329,13 @@
 }
 
 .deck-counter span {
-  color: #d4af37;
+  color: #ff1493;
   font-weight: 600;
   font-size: 1.1rem;
-  background: rgba(26, 26, 26, 0.8);
+  background: rgba(255, 192, 203, 0.2);
   padding: 12px 24px;
   border-radius: 25px;
-  border: 1px solid #d4af37;
+  border: 1px solid #ff1493;
   backdrop-filter: blur(10px);
 }
 

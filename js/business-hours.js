@@ -1,22 +1,22 @@
 /**
  * Business Hours Status Banner
- * Real-time status updates for Ink 102 Tattoos and Piercings
+ * Real-time status updates for Ink Or Die Tattoos
  */
 
 (function() {
   'use strict';
 
-  // Business hours configuration
+  // Business hours configuration for Ink Or Die Tattoos
   const BUSINESS_HOURS = {
-    // Monday-Saturday: 11:00 AM - 8:00 PM
-    // Sunday: 1:00 PM - 6:00 PM
-    monday: { open: 11, close: 20 },
-    tuesday: { open: 11, close: 20 },
-    wednesday: { open: 11, close: 20 },
-    thursday: { open: 11, close: 20 },
-    friday: { open: 11, close: 20 },
-    saturday: { open: 11, close: 20 },
-    sunday: { open: 13, close: 18 } // 1:00 PM - 6:00 PM
+    // Tuesday-Saturday: 12:00 PM - 9:00 PM
+    // Sunday-Monday: Closed
+    monday: { open: null, close: null }, // Closed
+    tuesday: { open: 12, close: 21 },
+    wednesday: { open: 12, close: 21 },
+    thursday: { open: 12, close: 21 },
+    friday: { open: 12, close: 21 },
+    saturday: { open: 12, close: 21 },
+    sunday: { open: null, close: null } // Closed
   };
 
   const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];

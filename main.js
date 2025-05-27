@@ -1,0 +1,626 @@
+/**
+ * Ink Or Die Tattoos - Main JavaScript
+ * Modern, performant, and accessible interactions
+ */
+
+// ===== GLOBAL VARIABLES =====
+let isScrolling = false;
+let currentFilter = 'all';
+
+// ===== DOM CONTENT LOADED =====
+document.addEventListener('DOMContentLoaded', function() {
+    initializeNavigation();
+    initializePortfolio();
+    initializeContactForm();
+    initializeScrollEffects();
+    initializeAnimations();
+    initializeLightbox();
+    
+    console.log('🎨 Ink Or Die Tattoos website initialized successfully!');
+});
+
+// ===== NAVIGATION =====
+function initializeNavigation() {
+    const nav = document.getElementById('nav');
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    // Scroll effect for navigation
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', () => {
+        if (!isScrolling) {
+            requestAnimationFrame(() => {
+                const currentScrollY = window.scrollY;
+                
+                // Add scrolled class for styling
+                if (currentScrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+                
+                lastScrollY = currentScrollY;
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    });
+    
+    // Active navigation highlighting
+    const sections = document.querySelectorAll('section[id]');
+    
+    window.addEventListener('scroll', () => {
+        const scrollPos = window.scrollY + 100;
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            
+            if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${sectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    });
+    
+    // Smooth scroll for navigation links
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            scrollToSection(targetId);
+        });
+    });
+    
+    // Mobile menu toggle (for future implementation)
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            console.log('Mobile menu toggle clicked');
+            // Mobile menu implementation would go here
+        });
+    }
+}
+
+// ===== PORTFOLIO FUNCTIONALITY =====
+function initializePortfolio() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    
+    // Filter functionality
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.getAttribute('data-filter');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Filter items with animation
+            filterPortfolioItems(filter, portfolioItems);
+            currentFilter = filter;
+        });
+    });
+    
+    // Initialize with all items visible
+    showAllPortfolioItems(portfolioItems);
+}
+
+function filterPortfolioItems(filter, items) {
+    items.forEach((item, index) => {
+        const categories = item.getAttribute('data-category').split(' ');
+        const shouldShow = filter === 'all' || categories.includes(filter);
+        
+        // Add staggered animation delay
+        setTimeout(() => {
+            if (shouldShow) {
+                item.style.display = 'block';
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                
+                // Trigger reflow
+                item.offsetHeight;
+                
+                item.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            } else {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    item.style.display = 'none';
+                }, 300);
+            }
+        }, index * 100);
+    });
+}
+
+function showAllPortfolioItems(items) {
+    items.forEach((item, index) => {
+        setTimeout(() => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            // Trigger reflow
+            item.offsetHeight;
+            
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+        }, index * 150);
+    });
+}
+
+// ===== LIGHTBOX FUNCTIONALITY =====
+function initializeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    
+    // Close lightbox handlers
+    if (lightboxClose) {
+        lightboxClose.addEventListener('click', closeLightbox);
+    }
+    
+    if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
+            closeLightbox();
+        }
+    });
+}
+
+function openLightbox(imageSrc, title) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    
+    if (lightbox && lightboxImage && lightboxTitle) {
+        lightboxImage.src = imageSrc;
+        lightboxTitle.textContent = title;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Add entrance animation
+        lightboxImage.style.opacity = '0';
+        lightboxImage.style.transform = 'scale(0.8)';
+        
+        setTimeout(() => {
+            lightboxImage.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            lightboxImage.style.opacity = '1';
+            lightboxImage.style.transform = 'scale(1)';
+        }, 50);
+    }
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    
+    if (lightbox && lightboxImage) {
+        lightboxImage.style.opacity = '0';
+        lightboxImage.style.transform = 'scale(0.8)';
+        
+        setTimeout(() => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            lightboxImage.src = '';
+        }, 300);
+    }
+}
+
+// ===== CONTACT FORM =====
+function initializeContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactFormSubmit);
+        
+        // Add real-time validation
+        const inputs = contactForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('blur', validateInput);
+            input.addEventListener('input', clearValidationError);
+        });
+    }
+}
+
+function handleContactFormSubmit(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    
+    // Validate form
+    if (!validateContactForm(data)) {
+        return;
+    }
+    
+    // Show loading state
+    const submitButton = e.target.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    submitButton.disabled = true;
+    
+    // Simulate form submission (replace with actual API call)
+    setTimeout(() => {
+        showSuccessMessage();
+        e.target.reset();
+        
+        // Reset button
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+    }, 2000);
+}
+
+function validateContactForm(data) {
+    let isValid = true;
+    
+    // Required fields validation
+    const requiredFields = ['name', 'email', 'service', 'message'];
+    
+    requiredFields.forEach(field => {
+        if (!data[field] || data[field].trim() === '') {
+            showFieldError(field, 'This field is required');
+            isValid = false;
+        }
+    });
+    
+    // Email validation
+    if (data.email && !isValidEmail(data.email)) {
+        showFieldError('email', 'Please enter a valid email address');
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+function validateInput(e) {
+    const input = e.target;
+    const value = input.value.trim();
+    
+    clearValidationError(e);
+    
+    if (input.hasAttribute('required') && !value) {
+        showFieldError(input.name, 'This field is required');
+        return;
+    }
+    
+    if (input.type === 'email' && value && !isValidEmail(value)) {
+        showFieldError(input.name, 'Please enter a valid email address');
+        return;
+    }
+}
+
+function clearValidationError(e) {
+    const input = e.target;
+    const errorElement = document.querySelector(`[data-error-for="${input.name}"]`);
+    
+    if (errorElement) {
+        errorElement.remove();
+    }
+    
+    input.classList.remove('error');
+}
+
+function showFieldError(fieldName, message) {
+    const field = document.querySelector(`[name="${fieldName}"]`);
+    
+    if (field) {
+        field.classList.add('error');
+        
+        // Remove existing error message
+        const existingError = document.querySelector(`[data-error-for="${fieldName}"]`);
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Create new error message
+        const errorElement = document.createElement('div');
+        errorElement.className = 'field-error';
+        errorElement.setAttribute('data-error-for', fieldName);
+        errorElement.textContent = message;
+        
+        field.parentNode.appendChild(errorElement);
+    }
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function showSuccessMessage() {
+    // Create and show success notification
+    const notification = document.createElement('div');
+    notification.className = 'success-notification';
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <h4>Message Sent Successfully!</h4>
+            <p>Thank you for your interest. We'll get back to you within 24 hours.</p>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Add styles for the notification
+    const style = document.createElement('style');
+    style.textContent = `
+        .success-notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #d50032 0%, #d4af37 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 400px;
+        }
+        
+        .success-notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-content {
+            text-align: center;
+        }
+        
+        .notification-content i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .notification-content h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .notification-content p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        .field-error {
+            color: #d50032;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input.error,
+        select.error,
+        textarea.error {
+            border-color: #d50032 !important;
+            box-shadow: 0 0 0 3px rgba(213, 0, 50, 0.1) !important;
+        }
+    `;
+    
+    document.head.appendChild(style);
+    
+    // Show the notification
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+    
+    // Hide and remove the notification
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            notification.remove();
+            style.remove();
+        }, 300);
+    }, 5000);
+}
+
+// ===== SCROLL EFFECTS =====
+function initializeScrollEffects() {
+    initializeBackToTop();
+    initializeScrollAnimations();
+}
+
+function initializeBackToTop() {
+    const backToTopButton = document.getElementById('backToTop');
+    
+    if (backToTopButton) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+    }
+}
+
+function initializeScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-on-scroll');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    const elementsToAnimate = document.querySelectorAll(
+        '.service-card, .portfolio-item, .feature, .contact-card, .about-visual'
+    );
+    
+    elementsToAnimate.forEach(element => {
+        observer.observe(element);
+    });
+}
+
+// ===== GENERAL ANIMATIONS =====
+function initializeAnimations() {
+    // Hero images floating animation is handled by CSS
+    // Add any additional JavaScript animations here
+    
+    // Parallax effect for hero background
+    window.addEventListener('scroll', () => {
+        if (!isScrolling) {
+            requestAnimationFrame(() => {
+                const scrolled = window.scrollY;
+                const parallax = document.querySelector('.pattern-overlay');
+                
+                if (parallax) {
+                    const speed = scrolled * 0.5;
+                    parallax.style.transform = `translateY(${speed}px)`;
+                }
+                
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    });
+}
+
+// ===== UTILITY FUNCTIONS =====
+function scrollToSection(sectionId) {
+    const element = document.getElementById(sectionId);
+    
+    if (element) {
+        const headerOffset = 80;
+        const elementPosition = element.offsetTop;
+        const offsetPosition = elementPosition - headerOffset;
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// ===== PERFORMANCE OPTIMIZATIONS =====
+// Debounce function for scroll events
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            timeout = null;
+            if (!immediate) func(...args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func(...args);
+    };
+}
+
+// Throttle function for frequent events
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
+// ===== ACCESSIBILITY ENHANCEMENTS =====
+document.addEventListener('keydown', (e) => {
+    // Skip to main content with keyboard
+    if (e.altKey && e.key === 's') {
+        const main = document.querySelector('main') || document.querySelector('#home');
+        if (main) {
+            main.focus();
+            main.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    
+    // Focus management for lightbox
+    if (e.key === 'Tab') {
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox && lightbox.classList.contains('active')) {
+            // Trap focus within lightbox
+            const focusableElements = lightbox.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    lastElement.focus();
+                    e.preventDefault();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    firstElement.focus();
+                    e.preventDefault();
+                }
+            }
+        }
+    }
+});
+
+// ===== ERROR HANDLING =====
+window.addEventListener('error', (e) => {
+    console.error('JavaScript error occurred:', e.error);
+    // You could send error reports to a logging service here
+});
+
+window.addEventListener('unhandledrejection', (e) => {
+    console.error('Unhandled promise rejection:', e.reason);
+    // Handle promise rejections
+});
+
+// ===== EXPORT FUNCTIONS FOR INLINE USAGE =====
+window.scrollToSection = scrollToSection;
+window.scrollToTop = scrollToTop;
+window.openLightbox = openLightbox;
+window.closeLightbox = closeLightbox;
+
+// ===== LOADING COMPLETE =====
+window.addEventListener('load', () => {
+    console.log('🚀 Ink Or Die Tattoos website fully loaded and ready!');
+    
+    // Hide any loading indicators
+    const loader = document.querySelector('.page-loader');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 500);
+    }
+    
+    // Trigger any post-load animations
+    document.body.classList.add('loaded');
+});

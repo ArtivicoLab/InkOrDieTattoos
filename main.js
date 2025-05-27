@@ -91,30 +91,8 @@ function initializeNavigation() {
 
 // ===== FLOATING GALLERY FUNCTIONALITY =====
 function initializeFloatingGallery() {
-    let focusedImage = null;
-    let galleryOverlay = null;
-    let closeButton = null;
-    
-    // Create overlay and close button
-    createGalleryOverlay();
-    
     // Load images from the tattoos folder
     loadFloatingImages();
-    
-    function createGalleryOverlay() {
-        // Create overlay
-        galleryOverlay = document.createElement('div');
-        galleryOverlay.className = 'gallery-overlay';
-        galleryOverlay.addEventListener('click', closeGalleryFocus);
-        document.body.appendChild(galleryOverlay);
-        
-        // Create close button
-        closeButton = document.createElement('button');
-        closeButton.className = 'close-gallery';
-        closeButton.innerHTML = '<i class="fas fa-times"></i>';
-        closeButton.addEventListener('click', closeGalleryFocus);
-        document.body.appendChild(closeButton);
-    }
     
     async function loadFloatingImages() {
         const container = document.getElementById('floatingContainer');
@@ -169,8 +147,8 @@ function initializeFloatingGallery() {
             </div>
         `;
         
-        // Add click event for focus
-        imageElement.addEventListener('click', () => focusImage(imageElement));
+        // Add click event using the existing lightbox system
+        imageElement.addEventListener('click', () => openLightbox(imageData.src, imageData.title));
         
         container.appendChild(imageElement);
     }
@@ -196,60 +174,7 @@ function initializeFloatingGallery() {
         return positions[index % positions.length];
     }
     
-    function focusImage(imageElement) {
-        if (focusedImage === imageElement) {
-            closeGalleryFocus();
-            return;
-        }
-        
-        // Close any previously focused image
-        if (focusedImage) {
-            focusedImage.classList.remove('focused');
-        }
-        
-        // Show overlay first for smooth transition
-        galleryOverlay.classList.add('active');
-        closeButton.classList.add('active');
-        
-        // Small delay for overlay to appear, then focus image
-        setTimeout(() => {
-            focusedImage = imageElement;
-            imageElement.classList.add('focused');
-        }, 50);
-        
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-        
-        // Add keyboard listener
-        document.addEventListener('keydown', handleGalleryKeydown);
-    }
-    
-    function closeGalleryFocus() {
-        if (focusedImage) {
-            focusedImage.classList.remove('focused');
-            
-            // Wait for image animation to complete before hiding overlay
-            setTimeout(() => {
-                galleryOverlay.classList.remove('active');
-                closeButton.classList.remove('active');
-                focusedImage = null;
-            }, 200);
-        } else {
-            galleryOverlay.classList.remove('active');
-            closeButton.classList.remove('active');
-        }
-        
-        document.body.style.overflow = '';
-        
-        // Remove keyboard listener
-        document.removeEventListener('keydown', handleGalleryKeydown);
-    }
-    
-    function handleGalleryKeydown(e) {
-        if (e.key === 'Escape') {
-            closeGalleryFocus();
-        }
-    }
+
     
     function generateImageTitle(filename) {
         const titles = [

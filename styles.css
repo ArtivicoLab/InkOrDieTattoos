@@ -336,8 +336,111 @@ body {
     font-size: clamp(3.5rem, 8vw, 6rem);
     font-weight: 800;
     margin-bottom: 0.5rem;
-    color: var(--primary-dark);
     position: relative;
+}
+
+.animated-title {
+    background: linear-gradient(135deg, 
+        var(--accent-gold) 0%, 
+        #ffd700 25%, 
+        var(--primary-red) 50%, 
+        #8b0000 75%, 
+        var(--accent-gold) 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmerSweep 4s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer overlay effect */
+.animated-title::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.4) 50%, 
+        transparent 100%);
+    animation: shimmerMove 3s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* Individual letter animations */
+.letter {
+    display: inline-block;
+    animation: letterWave 2s ease-in-out infinite;
+    animation-fill-mode: both;
+}
+
+.letter:nth-child(1) { animation-delay: 0s; }
+.letter:nth-child(2) { animation-delay: 0.1s; }
+.letter:nth-child(3) { animation-delay: 0.2s; }
+.letter:nth-child(5) { animation-delay: 0.3s; }
+.letter:nth-child(6) { animation-delay: 0.4s; }
+.letter:nth-child(8) { animation-delay: 0.5s; }
+.letter:nth-child(9) { animation-delay: 0.6s; }
+.letter:nth-child(10) { animation-delay: 0.7s; }
+
+/* Keyframe animations */
+@keyframes shimmerSweep {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes shimmerMove {
+    0%, 100% {
+        left: -100%;
+        opacity: 0;
+    }
+    50% {
+        left: 100%;
+        opacity: 1;
+    }
+}
+
+@keyframes letterWave {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    25% {
+        transform: translateY(-8px) scale(1.02);
+    }
+    75% {
+        transform: translateY(4px) scale(0.98);
+    }
+}
+
+/* Hover effect for enhanced interaction */
+.animated-title:hover .letter {
+    animation: letterBounce 0.8s ease-in-out;
+}
+
+.animated-title:hover .letter:nth-child(1) { animation-delay: 0s; }
+.animated-title:hover .letter:nth-child(2) { animation-delay: 0.05s; }
+.animated-title:hover .letter:nth-child(3) { animation-delay: 0.1s; }
+.animated-title:hover .letter:nth-child(5) { animation-delay: 0.15s; }
+.animated-title:hover .letter:nth-child(6) { animation-delay: 0.2s; }
+.animated-title:hover .letter:nth-child(8) { animation-delay: 0.25s; }
+.animated-title:hover .letter:nth-child(9) { animation-delay: 0.3s; }
+.animated-title:hover .letter:nth-child(10) { animation-delay: 0.35s; }
+
+@keyframes letterBounce {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-12px) scale(1.1);
+    }
 }
 
 .title-sub {

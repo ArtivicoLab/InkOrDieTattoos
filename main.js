@@ -989,7 +989,41 @@ function showShareSuccess(message) {
     }, 3000);
 }
 
-// ===== WEBSITE SHARE FUNCTIONALITY =====
+// ===== SIMPLE COPY LINK FUNCTIONALITY =====
+function copyWebsiteLink() {
+    const url = window.location.href;
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+            showShareSuccess('Website link copied to clipboard!');
+        }).catch(() => {
+            fallbackCopy(url);
+        });
+    } else {
+        fallbackCopy(url);
+    }
+}
+
+function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        showShareSuccess('Website link copied to clipboard!');
+    } catch (err) {
+        showShareSuccess('Please copy this link: ' + text);
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// ===== OLD WEBSITE SHARE FUNCTIONALITY =====
 function shareWebsite() {
     const websiteUrl = window.location.href;
     const shareTitle = "Ink Or Die Tattoos - Amazing Tattoo Studio in Decatur, GA";
@@ -1468,6 +1502,7 @@ window.shareOnWhatsApp = shareOnWhatsApp;
 window.shareViaEmail = shareViaEmail;
 window.copyWebsiteUrl = copyWebsiteUrl;
 window.closeWebsiteShareModal = closeWebsiteShareModal;
+window.copyWebsiteLink = copyWebsiteLink;
 
 // Make sure the close function is properly attached
 document.addEventListener('DOMContentLoaded', function() {

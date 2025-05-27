@@ -865,50 +865,46 @@ body {
     visibility: visible;
 }
 
-.website-share-btn {
-    display: inline-flex;
+.direct-share-icons {
+    display: flex;
+    gap: 0.8rem;
     align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    background: var(--gradient-primary);
-    color: white;
+}
+
+.share-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
     border: none;
-    border-radius: 50px;
-    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(213, 0, 50, 0.4);
-    position: relative;
-    overflow: hidden;
-}
-
-.website-share-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.website-share-btn:hover::before {
-    left: 100%;
-}
-
-.website-share-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(213, 0, 50, 0.6);
-}
-
-.website-share-btn i {
     font-size: 1.2rem;
+    color: white;
 }
 
-.website-share-btn:hover .share-tooltip {
-    opacity: 1;
-    visibility: visible;
+.share-icon.facebook {
+    background: #1877f2;
+}
+
+.share-icon.twitter {
+    background: #1da1f2;
+}
+
+.share-icon.whatsapp {
+    background: #25d366;
+}
+
+.share-icon.copy {
+    background: var(--accent-gold);
+}
+
+.share-icon:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .filter-btn {
@@ -1451,9 +1447,13 @@ body {
 }
 
 .stat-label {
-    color: var(--grey-300);
+    color: black;
     font-size: 0.9rem;
     font-weight: 500;
+}
+
+.reviews-summary .stat-label{
+    color: white !important;
 }
 
 /* ===== CONTACT SECTION ===== */
@@ -2019,6 +2019,12 @@ body {
     
     .contact-form {
         padding: 1.5rem;
+    }
+}
+
+@media (max-width: 321px) {
+    .stat-number {
+        font-size: 1.8rem;
     }
 }
 

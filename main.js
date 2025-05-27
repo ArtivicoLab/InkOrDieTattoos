@@ -708,17 +708,13 @@ function initializeBusinessHours() {
     
     function updateBannerDisplay(status, now) {
         const banner = document.getElementById('statusBanner');
-        const nav = document.getElementById('nav');
-        const hero = document.querySelector('.hero');
         const statusText = banner.querySelector('.status-text');
         const currentTimeEl = banner.querySelector('.current-time');
         const nextChangeEl = banner.querySelector('.next-change');
         
-        if (banner && nav && hero) {
+        if (banner) {
             // Update banner classes
             banner.className = `status-banner visible ${status.type}`;
-            nav.classList.add('with-banner');
-            hero.classList.add('with-banner');
             
             // Update content
             statusText.textContent = status.message;

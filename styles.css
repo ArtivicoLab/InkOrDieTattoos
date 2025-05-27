@@ -74,24 +74,20 @@ body {
 
 /* ===== STATUS BANNER ===== */
 .status-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1001;
+    position: relative;
+    width: 100%;
     background: var(--gradient-primary);
     color: white;
-    padding: 0.8rem 0;
+    padding: 1rem 0;
     text-align: center;
     font-size: 0.9rem;
     font-weight: 500;
     box-shadow: var(--shadow-sm);
-    transform: translateY(-100%);
-    transition: var(--transition);
+    margin-top: 2rem;
 }
 
 .status-banner.visible {
-    transform: translateY(0);
+    display: block;
 }
 
 .status-banner.open {
@@ -148,15 +144,7 @@ body {
     font-style: italic;
 }
 
-/* Adjust navigation when banner is visible */
-.nav.with-banner {
-    top: 60px;
-}
-
-/* Adjust hero section when banner is visible */
-.hero.with-banner {
-    padding-top: 9rem;
-}
+/* Remove banner adjustments since it's now in hero */
 
 /* ===== NAVIGATION ===== */
 .nav {
@@ -1238,9 +1226,7 @@ body {
         min-height: auto;
     }
     
-    .hero.with-banner {
-        padding-top: 7rem;
-    }
+
     
     .status-content {
         flex-direction: column;

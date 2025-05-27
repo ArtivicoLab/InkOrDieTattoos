@@ -1040,7 +1040,7 @@ function showWebsiteShareModal(url, text) {
                         <p>Spread the word about our amazing work</p>
                     </div>
                 </div>
-                <button class="close-btn" onclick="closeWebsiteShareModal()">
+                <button class="close-btn" onclick="closeWebsiteShareModal()" type="button">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -1453,6 +1453,13 @@ window.shareOnWhatsApp = shareOnWhatsApp;
 window.shareViaEmail = shareViaEmail;
 window.copyWebsiteUrl = copyWebsiteUrl;
 window.closeWebsiteShareModal = closeWebsiteShareModal;
+
+// Make sure the close function is properly attached
+document.addEventListener('DOMContentLoaded', function() {
+    // Ensure close functions are globally available
+    window.closeWebsiteShareModal = closeWebsiteShareModal;
+    window.closeInstagramModal = closeInstagramModal;
+});
 
 // ===== BUSINESS HOURS FUNCTIONALITY =====
 function initializeBusinessHours() {

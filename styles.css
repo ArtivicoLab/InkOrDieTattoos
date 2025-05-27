@@ -336,42 +336,8 @@ body {
     font-size: clamp(3.5rem, 8vw, 6rem);
     font-weight: 800;
     margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, 
-        var(--accent-gold) 0%, 
-        #ffd700 30%, 
-        var(--primary-red) 70%, 
-        #8b0000 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 4px 12px rgba(213, 0, 50, 0.3);
+    color: var(--primary-dark);
     position: relative;
-    animation: titleGlow 3s ease-in-out infinite alternate;
-}
-
-.title-main:hover {
-    animation: titlePulse 0.8s ease-in-out;
-    transform: scale(1.02);
-}
-
-@keyframes titleGlow {
-    0% {
-        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4)) 
-                drop-shadow(0 0 20px rgba(213, 0, 50, 0.2));
-    }
-    100% {
-        filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6)) 
-                drop-shadow(0 0 30px rgba(213, 0, 50, 0.4));
-    }
-}
-
-@keyframes titlePulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.03);
-    }
 }
 
 .title-sub {

@@ -10,6 +10,7 @@ let currentFilter = 'all';
 // ===== DOM CONTENT LOADED =====
 document.addEventListener('DOMContentLoaded', function() {
     initializeNavigation();
+    initializeFloatingGallery();
     initializePortfolio();
     initializeContactForm();
     initializeScrollEffects();
@@ -86,6 +87,240 @@ function initializeNavigation() {
             // Mobile menu implementation would go here
         });
     }
+}
+
+// ===== FLOATING GALLERY FUNCTIONALITY =====
+function initializeFloatingGallery() {
+    let focusedImage = null;
+    let galleryOverlay = null;
+    let closeButton = null;
+    
+    // Create overlay and close button
+    createGalleryOverlay();
+    
+    // Load images from the tattoos folder
+    loadFloatingImages();
+    
+    function createGalleryOverlay() {
+        // Create overlay
+        galleryOverlay = document.createElement('div');
+        galleryOverlay.className = 'gallery-overlay';
+        galleryOverlay.addEventListener('click', closeGalleryFocus);
+        document.body.appendChild(galleryOverlay);
+        
+        // Create close button
+        closeButton = document.createElement('button');
+        closeButton.className = 'close-gallery';
+        closeButton.innerHTML = '<i class="fas fa-times"></i>';
+        closeButton.addEventListener('click', closeGalleryFocus);
+        document.body.appendChild(closeButton);
+    }
+    
+    async function loadFloatingImages() {
+        const container = document.getElementById('floatingContainer');
+        if (!container) return;
+        
+        // Available tattoo images
+        const imageList = [
+            'IMG_8684.jpeg',
+            'IMG_8685.jpeg', 
+            'IMG_8686.jpeg',
+            'IMG_8687.jpeg',
+            'IMG_8688.jpeg',
+            'IMG_8689.jpeg',
+            'IMG_8690.jpeg',
+            'IMG_8691.jpeg'
+        ];
+        
+        // Generate descriptions for each image
+        const imageData = imageList.map((filename, index) => ({
+            src: `/images/tattoos/${filename}`,
+            title: generateImageTitle(filename),
+            description: generateImageDescription(filename),
+            id: `floating-${index}`
+        }));
+        
+        // Clear container
+        container.innerHTML = '';
+        
+        // Create floating images
+        imageData.forEach((image, index) => {
+            createFloatingImage(image, index, container);
+        });
+        
+        console.log(`🎨 Loaded ${imageData.length} floating images!`);
+    }
+    
+    function createFloatingImage(imageData, index, container) {
+        const imageElement = document.createElement('div');
+        imageElement.className = 'floating-image';
+        imageElement.id = imageData.id;
+        
+        // Random positioning within container bounds
+        const positions = getRandomPosition(index, container);
+        imageElement.style.top = positions.top;
+        imageElement.style.left = positions.left;
+        
+        imageElement.innerHTML = `
+            <img src="${imageData.src}" alt="${imageData.title}" loading="lazy">
+            <div class="image-info">
+                <h4>${imageData.title}</h4>
+                <p>${imageData.description}</p>
+            </div>
+        `;
+        
+        // Add click event for focus
+        imageElement.addEventListener('click', () => focusImage(imageElement));
+        
+        container.appendChild(imageElement);
+    }
+    
+    function getRandomPosition(index, container) {
+        const containerRect = container.getBoundingClientRect();
+        const imageWidth = 200;
+        const imageHeight = 250;
+        const padding = 20;
+        
+        // Predefined positions to avoid overlap
+        const positions = [
+            { top: '10%', left: '5%' },
+            { top: '15%', left: '60%' },
+            { top: '40%', left: '15%' },
+            { top: '35%', left: '70%' },
+            { top: '65%', left: '10%' },
+            { top: '60%', left: '55%' },
+            { top: '20%', left: '35%' },
+            { top: '50%', left: '40%' }
+        ];
+        
+        return positions[index % positions.length];
+    }
+    
+    function focusImage(imageElement) {
+        if (focusedImage === imageElement) {
+            closeGalleryFocus();
+            return;
+        }
+        
+        // Close any previously focused image
+        if (focusedImage) {
+            focusedImage.classList.remove('focused');
+        }
+        
+        // Focus new image
+        focusedImage = imageElement;
+        imageElement.classList.add('focused');
+        
+        // Show overlay and close button
+        galleryOverlay.classList.add('active');
+        closeButton.classList.add('active');
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        // Add keyboard listener
+        document.addEventListener('keydown', handleGalleryKeydown);
+    }
+    
+    function closeGalleryFocus() {
+        if (focusedImage) {
+            focusedImage.classList.remove('focused');
+            focusedImage = null;
+        }
+        
+        galleryOverlay.classList.remove('active');
+        closeButton.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Remove keyboard listener
+        document.removeEventListener('keydown', handleGalleryKeydown);
+    }
+    
+    function handleGalleryKeydown(e) {
+        if (e.key === 'Escape') {
+            closeGalleryFocus();
+        }
+    }
+    
+    function generateImageTitle(filename) {
+        const titles = [
+            'Detailed Portrait Work',
+            'Vibrant Color Design', 
+            'Black & Gray Masterpiece',
+            'Geometric Precision',
+            'Realistic Portrait',
+            'Custom Artwork',
+            'Fine Line Work',
+            'Bold Color Piece'
+        ];
+        
+        const hash = filename.split('').reduce((a, b) => {
+            a = ((a << 5) - a) + b.charCodeAt(0);
+            return a & a;
+        }, 0);
+        
+        return titles[Math.abs(hash) % titles.length];
+    }
+    
+    function generateImageDescription(filename) {
+        const descriptions = [
+            'Intricate details and expert shading',
+            'Bold colors and striking composition',
+            'Classic black and gray technique',
+            'Precise geometric patterns',
+            'Lifelike portrait artistry',
+            'Unique custom design',
+            'Delicate fine line technique',
+            'Vibrant and eye-catching'
+        ];
+        
+        const hash = filename.split('').reduce((a, b) => {
+            a = ((a << 5) - a) + b.charCodeAt(0);
+            return a & a;
+        }, 0);
+        
+        return descriptions[Math.abs(hash) % descriptions.length];
+    }
+    
+    // Global functions for buttons
+    window.refreshGallery = function() {
+        loadFloatingImages();
+        
+        // Show refresh animation
+        const container = document.getElementById('floatingContainer');
+        if (container) {
+            container.style.opacity = '0.5';
+            setTimeout(() => {
+                container.style.opacity = '1';
+            }, 300);
+        }
+    };
+    
+    window.randomizePositions = function() {
+        const images = document.querySelectorAll('.floating-image');
+        const positions = [
+            { top: '8%', left: '12%' },
+            { top: '25%', left: '65%' },
+            { top: '45%', left: '8%' },
+            { top: '18%', left: '45%' },
+            { top: '65%', left: '55%' },
+            { top: '55%', left: '25%' },
+            { top: '35%', left: '75%' },
+            { top: '75%', left: '15%' }
+        ];
+        
+        images.forEach((image, index) => {
+            const newPos = positions[Math.floor(Math.random() * positions.length)];
+            image.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            image.style.top = newPos.top;
+            image.style.left = newPos.left;
+            
+            // Reset transition after animation
+            setTimeout(() => {
+                image.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            }, 800);
+        });
+    };
 }
 
 // ===== PORTFOLIO FUNCTIONALITY =====

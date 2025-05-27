@@ -181,16 +181,16 @@ function initializeFloatingGallery() {
         const imageHeight = 250;
         const padding = 20;
         
-        // Predefined positions to avoid overlap
+        // Organized grid positions for cleaner layout
         const positions = [
-            { top: '10%', left: '5%' },
-            { top: '15%', left: '60%' },
-            { top: '40%', left: '15%' },
-            { top: '35%', left: '70%' },
-            { top: '65%', left: '10%' },
-            { top: '60%', left: '55%' },
-            { top: '20%', left: '35%' },
-            { top: '50%', left: '40%' }
+            { top: '8%', left: '8%' },
+            { top: '8%', left: '38%' },
+            { top: '8%', left: '68%' },
+            { top: '45%', left: '8%' },
+            { top: '45%', left: '38%' },
+            { top: '45%', left: '68%' },
+            { top: '26%', left: '23%' },
+            { top: '26%', left: '53%' }
         ];
         
         return positions[index % positions.length];
@@ -298,27 +298,54 @@ function initializeFloatingGallery() {
     
     window.randomizePositions = function() {
         const images = document.querySelectorAll('.floating-image');
-        const positions = [
-            { top: '8%', left: '12%' },
-            { top: '25%', left: '65%' },
-            { top: '45%', left: '8%' },
-            { top: '18%', left: '45%' },
-            { top: '65%', left: '55%' },
-            { top: '55%', left: '25%' },
-            { top: '35%', left: '75%' },
-            { top: '75%', left: '15%' }
+        const layouts = [
+            // Grid layout
+            [
+                { top: '8%', left: '8%' },
+                { top: '8%', left: '38%' },
+                { top: '8%', left: '68%' },
+                { top: '45%', left: '8%' },
+                { top: '45%', left: '38%' },
+                { top: '45%', left: '68%' },
+                { top: '26%', left: '23%' },
+                { top: '26%', left: '53%' }
+            ],
+            // Diamond layout
+            [
+                { top: '5%', left: '40%' },
+                { top: '20%', left: '15%' },
+                { top: '20%', left: '65%' },
+                { top: '35%', left: '5%' },
+                { top: '35%', left: '75%' },
+                { top: '50%', left: '15%' },
+                { top: '50%', left: '65%' },
+                { top: '65%', left: '40%' }
+            ],
+            // Circular layout
+            [
+                { top: '5%', left: '35%' },
+                { top: '15%', left: '65%' },
+                { top: '35%', left: '75%' },
+                { top: '60%', left: '65%' },
+                { top: '70%', left: '35%' },
+                { top: '60%', left: '5%' },
+                { top: '35%', left: '5%' },
+                { top: '15%', left: '15%' }
+            ]
         ];
         
+        const selectedLayout = layouts[Math.floor(Math.random() * layouts.length)];
+        
         images.forEach((image, index) => {
-            const newPos = positions[Math.floor(Math.random() * positions.length)];
-            image.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            const newPos = selectedLayout[index] || selectedLayout[0];
+            image.style.transition = 'all 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
             image.style.top = newPos.top;
             image.style.left = newPos.left;
             
             // Reset transition after animation
             setTimeout(() => {
                 image.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-            }, 800);
+            }, 1200);
         });
     };
 }

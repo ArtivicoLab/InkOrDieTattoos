@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Skip link for keyboard navigation -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ink Or Die Tattoos | Premium Studio Experience</title>
@@ -58,7 +60,7 @@
                     <span>Premium Female-Owned Studio</span>
                 </div>
                 
-                <h1 class="hero-title">
+                <h1 class="hero-title" id="hero-title" aria-label="Ink Or Die Tattoos - Premium Female-Owned Studio">
                     <span class="title-main">Ink Or Die</span>
                     <span class="title-sub">Tattoos</span>
                 </h1>
@@ -69,13 +71,17 @@
                 </p>
                 
                 <div class="hero-actions">
-                    <button class="btn btn-primary" onclick="scrollToSection('contact')">
+                    <button class="btn btn-primary" onclick="scrollToSection('contact')" 
+                        aria-label="Book a tattoo consultation appointment" 
+                        title="Schedule your custom tattoo consultation">
                         <span>Book Consultation</span>
-                        <i class="fas fa-arrow-right"></i>
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-secondary" onclick="scrollToSection('portfolio')">
+                    <button class="btn btn-secondary" onclick="scrollToSection('portfolio')" 
+                        aria-label="View our tattoo portfolio and artwork gallery" 
+                        title="Browse our collection of tattoo designs">
                         <span>View Portfolio</span>
-                        <i class="fas fa-images"></i>
+                        <i class="fas fa-images" aria-hidden="true"></i>
                     </button>
                 </div>
                 
@@ -165,16 +171,20 @@
                 </div>
                 
                 <div class="social-share-section">
-                    <button class="instagram-share-btn" onclick="shareToInstagram()">
-                        <i class="fab fa-instagram"></i>
+                    <button class="instagram-share-btn" onclick="shareToInstagram()" 
+                        aria-label="Share our tattoo portfolio on Instagram" 
+                        title="Share our amazing work on Instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
                         <span>Share Portfolio</span>
-                        <div class="share-tooltip">Share our amazing work on Instagram!</div>
+                        <div class="share-tooltip" role="tooltip">Share our amazing work on Instagram!</div>
                     </button>
                     
-                    <button class="website-share-btn" onclick="shareWebsite()">
-                        <i class="fas fa-share-alt"></i>
+                    <button class="website-share-btn" onclick="shareWebsite()" 
+                        aria-label="Share Ink Or Die Tattoos website" 
+                        title="Share our website with friends">
+                        <i class="fas fa-share-alt" aria-hidden="true"></i>
                         <span>Share Website</span>
-                        <div class="share-tooltip">Share our website with friends!</div>
+                        <div class="share-tooltip" role="tooltip">Share our website with friends!</div>
                     </button>
                 </div>
             </div>
@@ -654,9 +664,10 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">

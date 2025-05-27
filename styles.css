@@ -604,6 +604,12 @@ body {
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+.floating-image img.loaded {
+    opacity: 1;
 }
 
 .floating-image:hover img {
@@ -652,6 +658,9 @@ body {
 
 .floating-image {
     animation: gentleFloat 4s ease-in-out infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
 }
 
 .floating-image:nth-child(1) { animation-delay: 0s; }
@@ -743,6 +752,11 @@ body {
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
+    will-change: transform;
+}
+
+.portfolio-image img.preloaded {
+    opacity: 1;
 }
 
 .portfolio-overlay {

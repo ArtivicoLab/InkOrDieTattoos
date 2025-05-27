@@ -121,15 +121,35 @@ function initializeFloatingGallery() {
         // Clear container
         container.innerHTML = '';
         
-        // Create floating images
-        imageData.forEach((image, index) => {
-            createFloatingImage(image, index, container);
-        });
+        // Create floating images with progressive loading
+        await createFloatingImagesProgressively(imageData, container);
         
-        console.log(`🎨 Loaded ${imageData.length} floating images!`);
+        console.log(`🎨 Loaded ${imageData.length} floating images with performance optimization!`);
     }
     
-    function createFloatingImage(imageData, index, container) {
+    async function createFloatingImagesProgressively(imageData, container) {
+        // Load first 4 images immediately (above the fold)
+        const priorityImages = imageData.slice(0, 4);
+        const deferredImages = imageData.slice(4);
+        
+        // Create priority images first
+        priorityImages.forEach((image, index) => {
+            createFloatingImage(image, index, container, true);
+        });
+        
+        // Use requestAnimationFrame for smooth UI
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        
+        // Load remaining images with slight delay to avoid blocking
+        for (let i = 0; i < deferredImages.length; i++) {
+            setTimeout(() => {
+                const globalIndex = i + 4;
+                createFloatingImage(deferredImages[i], globalIndex, container, false);
+            }, i * 100); // 100ms delay between each image
+        }
+    }
+    
+    function createFloatingImage(imageData, index, container, isPriority = false) {
         const imageElement = document.createElement('div');
         imageElement.className = 'floating-image';
         imageElement.id = imageData.id;
@@ -139,18 +159,71 @@ function initializeFloatingGallery() {
         imageElement.style.top = positions.top;
         imageElement.style.left = positions.left;
         
+        // Create optimized image with performance features
+        const img = createOptimizedImage(imageData, isPriority);
+        
         imageElement.innerHTML = `
-            <img src="${imageData.src}" alt="${imageData.title}" loading="lazy">
             <div class="image-info">
                 <h4>${imageData.title}</h4>
                 <p>${imageData.description}</p>
             </div>
         `;
         
+        // Insert the optimized image
+        imageElement.insertBefore(img, imageElement.firstChild);
+        
         // Add click event using the existing lightbox system
         imageElement.addEventListener('click', () => openLightbox(imageData.src, imageData.title));
         
         container.appendChild(imageElement);
+        
+        // Add entrance animation
+        requestAnimationFrame(() => {
+            imageElement.style.opacity = '0';
+            imageElement.style.transform = 'translateY(20px)';
+            imageElement.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            
+            setTimeout(() => {
+                imageElement.style.opacity = '1';
+                imageElement.style.transform = 'translateY(0)';
+            }, index * 150);
+        });
+    }
+    
+    function createOptimizedImage(imageData, isPriority) {
+        const img = document.createElement('img');
+        img.src = imageData.src;
+        img.alt = imageData.title;
+        
+        // Performance optimizations
+        if (isPriority) {
+            img.loading = 'eager';
+            img.fetchpriority = 'high';
+        } else {
+            img.loading = 'lazy';
+            img.fetchpriority = 'low';
+        }
+        
+        // Image optimization attributes
+        img.decoding = 'async';
+        
+        // Placeholder while loading
+        img.style.backgroundColor = '#f0f0f0';
+        img.style.transition = 'opacity 0.3s ease';
+        
+        // Handle load events for smooth appearance
+        img.addEventListener('load', function() {
+            this.style.opacity = '1';
+            this.classList.add('loaded');
+        });
+        
+        img.addEventListener('error', function() {
+            console.warn(`Failed to load image: ${imageData.src}`);
+            this.style.backgroundColor = '#e0e0e0';
+            this.style.opacity = '0.5';
+        });
+        
+        return img;
     }
     
     function getRandomPosition(index, container) {
@@ -224,6 +297,9 @@ function initializePortfolio() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const portfolioItems = document.querySelectorAll('.portfolio-item');
     
+    // Preload portfolio images for better performance
+    preloadPortfolioImages(portfolioItems);
+    
     // Filter functionality
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -241,6 +317,28 @@ function initializePortfolio() {
     
     // Initialize with all items visible
     showAllPortfolioItems(portfolioItems);
+}
+
+function preloadPortfolioImages(portfolioItems) {
+    // Preload first few visible portfolio images
+    const visibleItems = Array.from(portfolioItems).slice(0, 6);
+    
+    visibleItems.forEach((item, index) => {
+        const img = item.querySelector('img');
+        if (img && img.src) {
+            // Create image preloader
+            const preloader = new Image();
+            preloader.onload = () => {
+                img.style.opacity = '1';
+                img.classList.add('preloaded');
+            };
+            preloader.src = img.src;
+            
+            // Set initial opacity for smooth loading
+            img.style.opacity = '0';
+            img.style.transition = 'opacity 0.3s ease';
+        }
+    });
 }
 
 function filterPortfolioItems(filter, items) {
@@ -570,6 +668,33 @@ function showSuccessMessage() {
 function initializeScrollEffects() {
     initializeBackToTop();
     initializeScrollAnimations();
+    initializeImageLazyLoading();
+}
+
+function initializeImageLazyLoading() {
+    // Enhanced lazy loading with Intersection Observer
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '50px 0px',
+            threshold: 0.01
+        });
+        
+        // Observe all lazy images
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
 }
 
 function initializeBackToTop() {

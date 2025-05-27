@@ -24,7 +24,7 @@
   <meta property="twitter:image" content="/images/tattoos/IMG_8684.jpeg">
   
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/retro-theme.css?v=4.0">
+  <link rel="stylesheet" href="css/retro-theme.css?v=5.0">
   <link rel="stylesheet" href="css/card-deck.css?v=2.0">
 
   
@@ -915,41 +915,65 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
-        <div class="footer-logo">
-          <svg viewBox="0 0 100 100" width="50" height="50">
-            <circle cx="50" cy="50" r="45" fill="none" stroke="#d4af37" stroke-width="2" />
-            <path d="M30,30 L70,70 M30,70 L70,30" stroke="#d4af37" stroke-width="3" />
-            <circle cx="50" cy="50" r="10" fill="#d4af37" />
-          </svg>
+        <div class="footer-section">
+          <div class="footer-logo">
+            <svg class="logo-img" viewBox="0 0 100 100" width="40" height="40">
+              <defs>
+                <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#d4827e;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#e4a49a;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#f4e4e2;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="45" fill="none" stroke="url(#footerLogoGradient)" stroke-width="3" />
+              <path d="M35,35 Q50,25 65,35 Q70,50 65,65 Q50,75 35,65 Q30,50 35,35" fill="url(#footerLogoGradient)" />
+              <circle cx="50" cy="50" r="8" fill="#ffffff" />
+            </svg>
+            <div class="footer-brand">
+              <h3>Ink Or Die Tattoos</h3>
+              <p>Decatur's boldest female-owned tattoo studio bringing retro vibes and fresh artistry to life.</p>
+            </div>
+          </div>
         </div>
         
-        <div class="footer-links">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#gallery">Gallery</a>
-          <a href="#calculator">Calculator</a>
-          <a href="#contact">Contact</a>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Our Services</a></li>
+            <li><a href="#gallery">Portfolio</a></li>
+            <li><a href="#calculator">Price Calculator</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
         </div>
         
-        <div class="footer-social">
-          <a href="#" class="social-icon" aria-label="Facebook">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-          <a href="#" class="social-icon" aria-label="Instagram">
-            <i class="fab fa-instagram"></i>
-          </a>
-          <a href="#" class="social-icon" aria-label="Twitter">
-            <i class="fab fa-twitter"></i>
-          </a>
-          <a href="#" class="social-icon" aria-label="Pinterest">
-            <i class="fab fa-pinterest-p"></i>
-          </a>
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> 3407 Covington Dr, Decatur, GA 30032</li>
+            <li><i class="fas fa-phone-alt"></i> (404) 555-1234</li>
+            <li><i class="fas fa-envelope"></i> hello@inkordiettattoos.com</li>
+            <li><i class="fas fa-clock"></i> Tue-Sat: 12PM-9PM</li>
+          </ul>
         </div>
         
-        <div class="copyright">
-          &copy; 2025 Ink 102 Tattoos and Piercings. All rights reserved.
+        <div class="footer-section">
+          <h4>Follow Our Journey</h4>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          </div>
+          <div class="footer-badge">
+            <span class="female-owned-badge">Female-Owned Business</span>
+          </div>
         </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2024 Ink Or Die Tattoos. All rights reserved. | Proudly serving Decatur, GA</p>
       </div>
     </div>
   </footer>

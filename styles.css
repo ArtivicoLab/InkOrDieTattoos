@@ -69,11 +69,7 @@ body {
 
 /* Adjust body and nav for demo banner */
 body {
-    padding-top: 40px;
-}
-
-.nav {
-    top: 40px;
+    padding-top: 120px;
 }
 
 /* ===== CSS VARIABLES ===== */

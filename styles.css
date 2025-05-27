@@ -507,15 +507,18 @@ body {
     display: block;
     font-size: 2rem;
     font-weight: 800;
-    color: var(--accent-red);
+    color: var(--primary-red);
     font-family: var(--font-display);
+    text-shadow: 0 2px 4px rgba(213, 0, 50, 0.2);
 }
 
 .stat-label {
     display: block;
     font-size: 0.9rem;
-    color: var(--grey-700);
-    font-weight: 500;
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .hero-visual {
@@ -1820,6 +1823,29 @@ body {
     
     .nav-links {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 0 0 1rem 1rem;
+        padding: 1rem 0;
+        z-index: 1000;
+    }
+    
+    .nav-links.mobile-active {
+        display: flex;
+    }
+    
+    .nav-link {
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--grey-200);
+    }
+    
+    .nav-link:last-child {
+        border-bottom: none;
     }
     
     .nav-toggle {

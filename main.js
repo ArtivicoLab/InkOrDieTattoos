@@ -80,11 +80,26 @@ function initializeNavigation() {
         });
     });
     
-    // Mobile menu toggle (for future implementation)
+    // Mobile menu toggle implementation
     if (navToggle) {
-        navToggle.addEventListener('click', () => {
+        const navLinksContainer = document.querySelector('.nav-links');
+        
+        navToggle.addEventListener('click', (e) => {
+            e.preventDefault();
             console.log('Mobile menu toggle clicked');
-            // Mobile menu implementation would go here
+            
+            if (navLinksContainer) {
+                navLinksContainer.classList.toggle('mobile-active');
+                navToggle.classList.toggle('active');
+            }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinksContainer && !navToggle.contains(e.target) && !navLinksContainer.contains(e.target)) {
+                navLinksContainer.classList.remove('mobile-active');
+                navToggle.classList.remove('active');
+            }
         });
     }
 }

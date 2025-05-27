@@ -1005,9 +1005,9 @@ section {
 
 .calculator-wrapper {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 4rem;
-  max-width: 1200px;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  max-width: 1000px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -1020,14 +1020,15 @@ section {
 }
 
 .price-preview {
-  background: var(--retro-main-gradient);
+  background: linear-gradient(135deg, #2c1810 0%, #8b4513 100%);
   color: var(--retro-white);
-  padding: 3rem 2rem;
+  padding: 2rem 1.5rem;
   border-radius: var(--retro-border-radius);
   text-align: center;
   box-shadow: var(--retro-shadow);
   position: relative;
   overflow: hidden;
+  border: 2px solid var(--retro-pink-primary);
 }
 
 .price-preview::before {
@@ -1095,22 +1096,23 @@ section {
 }
 
 .calculator-form {
-  background: var(--retro-subtle-gradient);
+  background: var(--retro-white);
   border-radius: var(--retro-border-radius);
-  padding: 3rem;
+  padding: 2rem;
   box-shadow: var(--retro-shadow);
+  border: 1px solid var(--retro-pink-light);
 }
 
 .form-section h3 {
   font-family: var(--retro-font-display);
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: var(--retro-black);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .calc-group {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .calc-group label {
@@ -1190,9 +1192,9 @@ section {
 .option-card:hover,
 .option-card.active {
   border-color: var(--retro-pink-primary);
-  background: var(--retro-main-gradient);
+  background: var(--retro-brown);
   color: var(--retro-white);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: var(--retro-shadow);
 }
 
@@ -1274,10 +1276,10 @@ section {
 }
 
 .calculator-result-card {
-  background: var(--retro-white);
+  background: var(--retro-subtle-gradient);
   border-radius: var(--retro-border-radius);
-  padding: 2rem;
-  margin-top: 2rem;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
   box-shadow: var(--retro-shadow);
   border: 2px solid var(--retro-pink-primary);
 }

@@ -678,7 +678,7 @@ function shareToInstagram() {
 📍 3407 Covington Dr, Decatur, GA 30032
 
 Book your consultation today! 
-📞 (404) 555-1234
+📞 (404) 254-1182
 
 #InkOrDieTattoos #DecaturTattoos #FemaleOwned #CustomTattoos #PortraitTattoos #TattooArt #GeorgiaInk #TattooStudio #InkMaster #TattooLife`;
 
@@ -1035,7 +1035,7 @@ function shareWebsite() {
 📍 3407 Covington Dr, Decatur, GA 30032
 
 Book your consultation today!
-📞 (404) 555-1234
+📞 (404) 254-1182
 
 #InkOrDieTattoos #DecaturTattoos #FemaleOwned #CustomTattoos`;
 

@@ -125,7 +125,7 @@ function initializeFloatingGallery() {
         
         // Generate descriptions for each image
         const imageData = imageList.map((filename, index) => ({
-            src: `/images/tattoos/${filename}`,
+            src: `images/tattoos/${filename}`,
             title: generateImageTitle(filename),
             description: generateImageDescription(filename),
             id: `floating-${index}`

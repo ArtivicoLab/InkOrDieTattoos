@@ -115,14 +115,12 @@ function initializeFloatingGallery() {
         
         // Available tattoo images
         const imageList = [
-            'IMG_8684.jpeg',
-            'IMG_8685.jpeg', 
-            'IMG_8686.jpeg',
-            'IMG_8687.jpeg',
-            'IMG_8688.jpeg',
-            'IMG_8689.jpeg',
-            'IMG_8690.jpeg',
-            'IMG_8691.jpeg'
+            'tattoo-8840.jpeg',
+            'tattoo-8841.jpeg',
+            'tattoo-8843.jpeg',
+            'tattoo-8844.jpeg',
+            'tattoo-8845.jpeg',
+            'tattoo-8846.jpeg'
         ];
         
         // Generate descriptions for each image
